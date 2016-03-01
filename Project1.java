@@ -30,7 +30,7 @@ public class Project1 {
             boolean isSnow, double precip, 
             double wind, double buo, int iHerb,
             double df, double ffm, double adfm,
-            int grass, int timber, double fload
+            double grass, double timber, double fload
             ){
         double [] A = new double[4];
         double [] B = new double[4];
@@ -152,6 +152,23 @@ public class Project1 {
             /**
              * TEST TO SEE IF THE WIND SPEED IS GREATERTHAN 14 M
              */
+            if (wind < 14.0) {
+                timber = 0.01312 * (wind + 6.0) * Math.pow(33.0 - adfm, 1.65) - 3.0;
+                grass = 0.01312 * (wind + 6.0) * Math.pow(33.0 - ffm, 1.65) - 3.0;
+                if (timber >= 1) {
+                    timber = 1.0;
+                }
+                if (grass >= 1.0) {
+                    grass = 1.0;
+                }
+            } else {
+                /**
+                 * WIND SPEED IS GREATER THAN 14 MPH. WE USE A DIFFERENTFORMUL
+                 */
+                  timber = 0.00918 * (wind + 14.0) * Math.pow(33.0 - adfm, 1.65) - 3.0;
+                  grass = 0.00918 * (wind + 14.0) * Math.pow(33.0 - ffm, 1.65) - 3.0;
+                  
+            }
         }
             
             
@@ -163,12 +180,12 @@ public class Project1 {
         private double df;
         private double ffm;
         private double adfm;        
-        private int grass;
-        private int timber;
+        private double grass;
+        private double timber;
         private double fload;  
         private double buo;
 
-        public ReturnedData(double df, double ffm, double adfm, int grass, int timber, double fload, double buo) {
+        public ReturnedData(double df, double ffm, double adfm, double grass, double timber, double fload, double buo) {
             this.df = df;
             this.ffm = ffm;
             this.adfm = adfm;
@@ -177,6 +194,8 @@ public class Project1 {
             this.fload = fload;
             this.buo = buo;
         }
+
+       
 
         
                 
