@@ -61,15 +61,36 @@ public class Project1 {
             
             double dif = dry - wet;
             for (int i = 0; i < C.length; i++) {
-                if (dif - C[i] > 0) {
+                if (dif > C[i]) {
                     ffm = B[i] * Math.exp(A[i] * dif);
+                }                
+            }
+            
+            /**
+             * WE WILL NOW FIND THE DRYING FACTORFOR THE DAY
+             */           
+            for (int i = 0; i < D.length; i++) {
+                if (ffm > D[i]) {
+                    df = i - 1;
+                    /**
+                     * TEST TO SEE IF THE FINE FUEL MOISTUREIS ONE OR LESS
+                     * TEST TO SEE IF THE FINE FUEL MOISTUREIS ONE OR LESS
+                     * IF FINE FUEL MOISTURE IS ONE OR LESS WE SET IT TO ON
+                     */
+                    if (ffm < 1.0) {
+                        ffm = 1.0;
+                    }
+                    /**
+                     * ADD 5 PERCENT FINE FUEL MOISTURE FOR EACH 
+                     * HERB STAGE GREATER THAN ONE
+                     */
+                    ffm += (iHerb - 1) * 5;
                 }                
             }
             
             
             
-        }
-        
+        }        
         return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
     }
     
