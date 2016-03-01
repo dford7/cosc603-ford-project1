@@ -44,6 +44,9 @@ public class Project1 {
         D[5] = 3.0 ;
         
         if (isSnow) {
+            // THERE IS SNOW ON THE GROUND'ANDTHE TIMBER AND GRASS SPREAD INDEXE
+            // MUST BE SET TO ZERO. WITH A ZERO TIMBERSPREAD THE FIRE LOAD IS
+            // ALSO ZERO. BUILD UP WILL BE ADJUSTED FOR PRECIPITATIO
             grass = 0;
             timber = 0;
             if (precip >= 0.1 ) {
@@ -51,9 +54,21 @@ public class Project1 {
                 if (buo < 0) {                    
                     buo = 0;
                 }
+            }            
+        } else {
+            //  HERE IS NO SNOW ON THE GRO_D AND WE WILL COMPUTETHE SPREAD INDEXE
+            // ND FIRE LOAD
+            
+            double dif = dry - wet;
+            for (int i = 0; i < C.length; i++) {
+                if (dif - C[i] > 0) {
+                    ffm = B[i] * Math.exp(A[i] * dif);
+                }                
             }
-            return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
-        } 
+            
+            
+            
+        }
         
         return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
     }
