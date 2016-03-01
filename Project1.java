@@ -4,30 +4,32 @@
  * @author Daniel 
  */
 public class Project1 {
+    
     public static void main(String[] args) {
         
-
+        
     }
     
     /**
      * danger function 
-     * @param dry 
-     * @param wet
-     * @param isSnow
-     * @param precip
-     * @param wind
-     * @param buo
-     * @param iHerb
-     * @param df
-     * @param ffm
-     * @param adfm
-     * @param grass
-     * @param timber
-     * @param fload
-     * @return 
+     * ROUTINEFOR COMPUTING NATIONAL FIRE DANGER RATINGS AND FIRE LOAD INDEX
+     * @param dry   DRY BULB TEMPERATE
+     * @param wet   WET BULB TEMPERATE
+     * @param isSnow SOME POSITIVENON ZERO NUMBER IF THERE IS SNOW ON THE GROUN
+     * @param precip RAINY  
+     * @param wind  THE CURRENTWIND SPEED IN MILES PER HOUR
+     * @param buo   THE LASTVALUE OF THE BUILD UP INDE
+     * @param iHerb THE CURRENTHERB STATE OF THE DISTRICTI=CURED,2=TRANSITION,3=GREE
+     * @param df    DRYING FACTOR
+     * @param ffm   FINE FUEL MOISTUR
+     * @param adfm  ADJUSTED(10 DAY LAG) FUEL MOISTUR
+     * @param grass GRASSSPREAD INDE
+     * @param timber TIMBER SPREAD INDE
+     * @param fload FIRE LOAD RATING (MAN-HOURBASE)
+     * @return ReturnedData 
      */
     public static ReturnedData danger(double dry, double wet,
-            boolean isSnow, double precip, 
+            int isSnow, double precip, 
             double wind, double buo, int iHerb,
             double df, double ffm, double adfm,
             double grass, double timber, double fload
@@ -60,7 +62,7 @@ public class Project1 {
         D[4] = 4.0 ; 
         D[5] = 3.0 ;
         
-        if (isSnow) {
+        if (isSnow > 0) {
             // THERE IS SNOW ON THE GROUND'ANDTHE TIMBER AND GRASS SPREAD INDEXE
             // MUST BE SET TO ZERO. WITH A ZERO TIMBERSPREAD THE FIRE LOAD IS
             // ALSO ZERO. BUILD UP WILL BE ADJUSTED FOR PRECIPITATIO
@@ -205,7 +207,11 @@ public class Project1 {
         return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
     }
     
+    /**
+     * returned data from the function danger
+     */
     public static class ReturnedData{
+        
         private double df;
         private double ffm;
         private double adfm;        
@@ -214,6 +220,16 @@ public class Project1 {
         private double fload;  
         private double buo;
 
+        /**
+         * Constructor 
+         * @param df    DRYING FACTOR
+         * @param ffm   FINE FUEL MOISTUR
+         * @param adfm  ADJUSTED(10 DAY LAG) FUEL MOISTUR
+         * @param grass GRASSSPREAD INDE
+         * @param timber TIMBER SPREAD INDE
+         * @param fload FIRE LOAD RATING (MAN-HOURBASE)
+         * @param buo THE LASTVALUE OF THE BUILD UP INDE
+         */
         public ReturnedData(double df, double ffm, double adfm, double grass, double timber, double fload, double buo) {
             this.df = df;
             this.ffm = ffm;
@@ -223,11 +239,7 @@ public class Project1 {
             this.fload = fload;
             this.buo = buo;
         }
-
        
-
-        
-                
     }
     
 }
