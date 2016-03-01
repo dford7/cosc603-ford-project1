@@ -191,9 +191,16 @@ public class Project1 {
         /**
          * BOTH TIMBER SPREAD AND BUILD UP ARE GREATER THAN ZER
          */
+        fload = 1.75 * Math.log10(timber) + 0.32 * Math.log10(buo) - 1.640;
+        /**
+         * ENSURE THAT FLOAD IS GREATER THAN ZERO, OTHERWISESET IT TO ZERO
+         */
+        if (fload < 0) {
+            fload = 0;
+            return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
+        }
         
-    
-            
+        fload = Math.pow(10, fload);            
                
         return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
     }
