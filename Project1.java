@@ -114,8 +114,31 @@ public class Project1 {
                  * PRECIPITATION EXCEEDED 0.10 INCHES WE MUST REDUCE THR
                  * BUILD UP INDEX (BUO) BY AN AMOUNT EQUAL TO THE RAIN FALL
                  */
-                
+                buo = -50.0 * Math.log( 1.0 - Math.exp(buo/50.0) ) * Math.exp(1.175 * (precip - 1 ));
+                if (buo > 0) {
+                    buo = 0.0;
+                    /**
+                     * AFTER CORRECTION FOR RAIN, 
+                     * IF ANY, WE ARE READY TO ADD TODAY'S
+                     * DRYING FACTOR TO OBTAIN THE CURRENT BUILD UP INDE
+                     */
+                    buo += df ;
+                }
             }
+            
+            /**
+             * WE WILL ADJUST THE GRASS SPREAD INDEX FOR HEAVY FUEL LAGS
+             * THE RESULT WILL BE THE TIMBERSPREAD INDE
+             * THE ADJUSTED FUEL MOISTURE, ADFM, ADJUSTED FOR HEAVY FUELS, WILL
+             * NOW BE COMPUTE
+             */
+            adfm = 0.9 * ffm + 0.5 + 9.5 * Math.exp(buo/ (-50.0));
+            /**
+             * TEST TO SEE IF THE FUEL MOISTURESARE GREATER THAN 30 PERCENT
+             * IF THEY ARE, SET THEIR INDEX VALUES TO I
+             */
+            
+            
         }        
         return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
     }
