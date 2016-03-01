@@ -71,75 +71,91 @@ public class Project1 {
                 if (buo < 0) {                    
                     buo = 0;
                 }
-            }            
-        } else {
-            //  HERE IS NO SNOW ON THE GRO_D AND WE WILL COMPUTETHE SPREAD INDEXE
-            // ND FIRE LOAD
-            
-            double dif = dry - wet;
-            for (int i = 0; i < C.length; i++) {
-                if (dif > C[i]) {
-                    ffm = B[i] * Math.exp(A[i] * dif);
-                }                
-            }
-            
-            /**
-             * WE WILL NOW FIND THE DRYING FACTORFOR THE DAY
-             */           
-            for (int i = 0; i < D.length; i++) {
-                if (ffm > D[i]) {
-                    df = i - 1;
-                    /**
-                     * TEST TO SEE IF THE FINE FUEL MOISTUREIS ONE OR LESS
-                     * TEST TO SEE IF THE FINE FUEL MOISTUREIS ONE OR LESS
-                     * IF FINE FUEL MOISTURE IS ONE OR LESS WE SET IT TO ON
-                     */
-                    if (ffm < 1.0) {
-                        ffm = 1.0;
-                    }
-                    /**
-                     * ADD 5 PERCENT FINE FUEL MOISTURE FOR EACH 
-                     * HERB STAGE GREATER THAN ONE
-                     */
-                    ffm += (iHerb - 1) * 5;
-                }                
-            }
-            
-            /**
-             * WE MUST ADJUST THE BUI FOR PRECIPITATION BEFORE 
-             * ADDING THE DRYING FACTO
-             */
-            if (precip >= 1.0) {
+            }   
+            return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
+ 
+        } 
+        //  HERE IS NO SNOW ON THE GRO_D AND WE WILL COMPUTETHE SPREAD INDEXE
+        // ND FIRE LOAD
+
+        double dif = dry - wet;
+        for (int i = 0; i < C.length; i++) {
+            if (dif > C[i]) {
+                ffm = B[i] * Math.exp(A[i] * dif);
+            }                
+        }
+
+        /**
+         * WE WILL NOW FIND THE DRYING FACTORFOR THE DAY
+         */           
+        for (int i = 0; i < D.length; i++) {
+            if (ffm > D[i]) {
+                df = i - 1;
                 /**
-                 * PRECIPITATION EXCEEDED 0.10 INCHES WE MUST REDUCE THR
-                 * BUILD UP INDEX (BUO) BY AN AMOUNT EQUAL TO THE RAIN FALL
+                 * TEST TO SEE IF THE FINE FUEL MOISTUREIS ONE OR LESS
+                 * TEST TO SEE IF THE FINE FUEL MOISTUREIS ONE OR LESS
+                 * IF FINE FUEL MOISTURE IS ONE OR LESS WE SET IT TO ON
                  */
-                buo = -50.0 * Math.log( 1.0 - Math.exp(buo/50.0) ) * Math.exp(1.175 * (precip - 1 ));
-                if (buo > 0) {
-                    buo = 0.0;
-                    /**
-                     * AFTER CORRECTION FOR RAIN, 
-                     * IF ANY, WE ARE READY TO ADD TODAY'S
-                     * DRYING FACTOR TO OBTAIN THE CURRENT BUILD UP INDE
-                     */
-                    buo += df ;
+                if (ffm < 1.0) {
+                    ffm = 1.0;
                 }
+                /**
+                 * ADD 5 PERCENT FINE FUEL MOISTURE FOR EACH 
+                 * HERB STAGE GREATER THAN ONE
+                 */
+                ffm += (iHerb - 1) * 5;
+            }                
+        }
+
+        /**
+         * WE MUST ADJUST THE BUI FOR PRECIPITATION BEFORE 
+         * ADDING THE DRYING FACTO
+         */
+        if (precip >= 1.0) {
+            /**
+             * PRECIPITATION EXCEEDED 0.10 INCHES WE MUST REDUCE THR
+             * BUILD UP INDEX (BUO) BY AN AMOUNT EQUAL TO THE RAIN FALL
+             */
+            buo = -50.0 * Math.log( 1.0 - Math.exp(buo/50.0) ) * Math.exp(1.175 * (precip - 1 ));
+            if (buo > 0) {
+                buo = 0.0;
+                /**
+                 * AFTER CORRECTION FOR RAIN, 
+                 * IF ANY, WE ARE READY TO ADD TODAY'S
+                 * DRYING FACTOR TO OBTAIN THE CURRENT BUILD UP INDE
+                 */
+                buo += df ;
             }
-            
+        }
+
+        /**
+         * WE WILL ADJUST THE GRASS SPREAD INDEX FOR HEAVY FUEL LAGS
+         * THE RESULT WILL BE THE TIMBERSPREAD INDE
+         * THE ADJUSTED FUEL MOISTURE, ADFM, ADJUSTED FOR HEAVY FUELS, WILL
+         * NOW BE COMPUTE
+         */
+        adfm = 0.9 * ffm + 0.5 + 9.5 * Math.exp(buo/ (-50.0));
+        /**
+         * TEST TO SEE IF THE FUEL MOISTURESARE GREATER THAN 30 PERCENT
+         * IF THEY ARE, SET THEIR INDEX VALUES TO I
+         */
+        if (adfm >= 30.0) {
+            if (ffm >= 30.0) {
+                /**
+                 * FINE FUEL MOISTURE IS GREATERTHAN 30 PERCENT, 
+                 * THUS WE SET THE GRASS AND TIMBER SPREAD INDEXES TO ONE                     */
+                grass = 1;
+                timber = 1;
+                return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
+            }   
+            timber = 1;
             /**
-             * WE WILL ADJUST THE GRASS SPREAD INDEX FOR HEAVY FUEL LAGS
-             * THE RESULT WILL BE THE TIMBERSPREAD INDE
-             * THE ADJUSTED FUEL MOISTURE, ADFM, ADJUSTED FOR HEAVY FUELS, WILL
-             * NOW BE COMPUTE
+             * TEST TO SEE IF THE WIND SPEED IS GREATERTHAN 14 M
              */
-            adfm = 0.9 * ffm + 0.5 + 9.5 * Math.exp(buo/ (-50.0));
-            /**
-             * TEST TO SEE IF THE FUEL MOISTURESARE GREATER THAN 30 PERCENT
-             * IF THEY ARE, SET THEIR INDEX VALUES TO I
-             */
+        }
             
             
-        }        
+               
         return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
     }
     
