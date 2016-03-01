@@ -151,36 +151,48 @@ public class Project1 {
             timber = 1;            
         }
         /**
-             * TEST TO SEE IF THE WIND SPEED IS GREATERTHAN 14 M
-             */
-            if (wind < 14.0) {
-                timber = 0.01312 * (wind + 6.0) * Math.pow(33.0 - adfm, 1.65) - 3.0;
-                grass = 0.01312 * (wind + 6.0) * Math.pow(33.0 - ffm, 1.65) - 3.0;
-                if (timber >= 1) {
-                    timber = 1.0;
-                }
-                if (grass >= 1.0) {
-                    grass = 1.0;
-                }
-            } else {
-                /**
-                 * WIND SPEED IS GREATER THAN 14 MPH. WE USE A DIFFERENTFORMUL
-                 */
-                timber = 0.00918 * (wind + 14.0) * Math.pow(33.0 - adfm, 1.65) - 3.0;
-                grass = 0.00918 * (wind + 14.0) * Math.pow(33.0 - ffm, 1.65) - 3.0;
-                if (grass >= 99.0 ) {
-                    grass = 99.0;
-                }
-                if (timber >= 99.0) {
-                    timber = 99.0;
-                }
+        * TEST TO SEE IF THE WIND SPEED IS GREATERTHAN 14 M
+        */
+        if (wind < 14.0) {
+            timber = 0.01312 * (wind + 6.0) * Math.pow(33.0 - adfm, 1.65) - 3.0;
+            grass = 0.01312 * (wind + 6.0) * Math.pow(33.0 - ffm, 1.65) - 3.0;
+            if (timber >= 1) {
+                timber = 1.0;
             }
+            if (grass >= 1.0) {
+                grass = 1.0;
+            }
+        } else {
             /**
-             * WE HAVE NOW COMPUTEDTHE GRASS AND TIMBER SPREAD INDEXE
-             * OF THE NATIONAL FIRE DANGER RATING SYSTEM. WE HAVE TH
-             * BUILD UP INDEX AND NOW WE WILL COMPUTETHE FIRE LOAD RATING
+             * WIND SPEED IS GREATER THAN 14 MPH. WE USE A DIFFERENTFORMUL
              */
+            timber = 0.00918 * (wind + 14.0) * Math.pow(33.0 - adfm, 1.65) - 3.0;
+            grass = 0.00918 * (wind + 14.0) * Math.pow(33.0 - ffm, 1.65) - 3.0;
+            if (grass >= 99.0 ) {
+                grass = 99.0;
+            }
+            if (timber >= 99.0) {
+                timber = 99.0;
+            }
+        }
+       /**
+        * WE HAVE NOW COMPUTEDTHE GRASS AND TIMBER SPREAD INDEXE
+        * OF THE NATIONAL FIRE DANGER RATING SYSTEM. WE HAVE TH
+        * BUILD UP INDEX AND NOW WE WILL COMPUTETHE FIRE LOAD RATING
+        */
+        if (timber <= 0 || buo <= 0) {
             
+                /**
+                 * IT IS NECESSARYTHAT NEITHER TIMBER SPREAD NOR BUILD UP BE ZER
+                 * IF EITHER TIMBER SPREAD OR BUILD UP IS ZERO, FIRE LOAD IS ZER
+                 */
+                return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);                        
+        }        
+        /**
+         * BOTH TIMBER SPREAD AND BUILD UP ARE GREATER THAN ZER
+         */
+        
+    
             
                
         return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
