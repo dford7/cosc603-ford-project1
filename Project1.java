@@ -9,6 +9,23 @@ public class Project1 {
 
     }
     
+    /**
+     * danger function 
+     * @param dry 
+     * @param wet
+     * @param isSnow
+     * @param precip
+     * @param wind
+     * @param buo
+     * @param iHerb
+     * @param df
+     * @param ffm
+     * @param adfm
+     * @param grass
+     * @param timber
+     * @param fload
+     * @return 
+     */
     public static ReturnedData danger(double dry, double wet,
             boolean isSnow, double precip, 
             double wind, double buo, int iHerb,
@@ -44,6 +61,9 @@ public class Project1 {
         D[5] = 3.0 ;
         
         if (isSnow) {
+            // THERE IS SNOW ON THE GROUND'ANDTHE TIMBER AND GRASS SPREAD INDEXE
+            // MUST BE SET TO ZERO. WITH A ZERO TIMBERSPREAD THE FIRE LOAD IS
+            // ALSO ZERO. BUILD UP WILL BE ADJUSTED FOR PRECIPITATIO
             grass = 0;
             timber = 0;
             if (precip >= 0.1 ) {
@@ -51,10 +71,52 @@ public class Project1 {
                 if (buo < 0) {                    
                     buo = 0;
                 }
+            }            
+        } else {
+            //  HERE IS NO SNOW ON THE GRO_D AND WE WILL COMPUTETHE SPREAD INDEXE
+            // ND FIRE LOAD
+            
+            double dif = dry - wet;
+            for (int i = 0; i < C.length; i++) {
+                if (dif > C[i]) {
+                    ffm = B[i] * Math.exp(A[i] * dif);
+                }                
             }
-            return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
-        } 
-        
+            
+            /**
+             * WE WILL NOW FIND THE DRYING FACTORFOR THE DAY
+             */           
+            for (int i = 0; i < D.length; i++) {
+                if (ffm > D[i]) {
+                    df = i - 1;
+                    /**
+                     * TEST TO SEE IF THE FINE FUEL MOISTUREIS ONE OR LESS
+                     * TEST TO SEE IF THE FINE FUEL MOISTUREIS ONE OR LESS
+                     * IF FINE FUEL MOISTURE IS ONE OR LESS WE SET IT TO ON
+                     */
+                    if (ffm < 1.0) {
+                        ffm = 1.0;
+                    }
+                    /**
+                     * ADD 5 PERCENT FINE FUEL MOISTURE FOR EACH 
+                     * HERB STAGE GREATER THAN ONE
+                     */
+                    ffm += (iHerb - 1) * 5;
+                }                
+            }
+            
+            /**
+             * WE MUST ADJUST THE BUI FOR PRECIPITATION BEFORE 
+             * ADDING THE DRYING FACTO
+             */
+            if (precip >= 1.0) {
+                /**
+                 * PRECIPITATION EXCEEDED 0.10 INCHES WE MUST REDUCE THR
+                 * BUILD UP INDEX (BUO) BY AN AMOUNT EQUAL TO THE RAIN FALL
+                 */
+                
+            }
+        }        
         return new ReturnedData(df, ffm, adfm, grass, timber, fload, buo);
     }
     
