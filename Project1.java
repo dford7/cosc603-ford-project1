@@ -1,10 +1,17 @@
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Project1.
  *
- * @author Daniel 
+ * @author Daniel
  */
 public class Project1 {
     
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
     public static void main(String[] args) {
         
         
@@ -12,11 +19,12 @@ public class Project1 {
     
     /**
      * danger function 
-     * ROUTINEFOR COMPUTING NATIONAL FIRE DANGER RATINGS AND FIRE LOAD INDEX
+     * ROUTINEFOR COMPUTING NATIONAL FIRE DANGER RATINGS AND FIRE LOAD INDEX.
+     *
      * @param dry   DRY BULB TEMPERATE
      * @param wet   WET BULB TEMPERATE
      * @param isSnow SOME POSITIVENON ZERO NUMBER IF THERE IS SNOW ON THE GROUN
-     * @param precip RAINY  
+     * @param precip RAINY
      * @param wind  THE CURRENTWIND SPEED IN MILES PER HOUR
      * @param buo   THE LASTVALUE OF THE BUILD UP INDE
      * @param iHerb THE CURRENTHERB STATE OF THE DISTRICTI=CURED,2=TRANSITION,3=GREE
@@ -26,7 +34,7 @@ public class Project1 {
      * @param grass GRASSSPREAD INDE
      * @param timber TIMBER SPREAD INDE
      * @param fload FIRE LOAD RATING (MAN-HOURBASE)
-     * @return ReturnedData 
+     * @return ReturnedData
      */
     public static ReturnedData danger(double dry, double wet,
             int isSnow, double precip, 
@@ -208,20 +216,34 @@ public class Project1 {
     }
     
     /**
-     * returned data from the function danger
+     * returned data from the function danger.
      */
     public static class ReturnedData{
         
+        /** The df. */
         private double df;
+        
+        /** The ffm. */
         private double ffm;
+        
+        /** The adfm. */
         private double adfm;        
+        
+        /** The grass. */
         private double grass;
+        
+        /** The timber. */
         private double timber;
+        
+        /** The fload. */
         private double fload;  
+        
+        /** The buo. */
         private double buo;
 
         /**
-         * Constructor 
+         * Constructor .
+         *
          * @param df    DRYING FACTOR
          * @param ffm   FINE FUEL MOISTUR
          * @param adfm  ADJUSTED(10 DAY LAG) FUEL MOISTUR
